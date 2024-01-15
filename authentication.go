@@ -10,6 +10,7 @@ import (
 	"github.com/tebeka/selenium"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"path"
 	"strings"
 	"time"
@@ -30,7 +31,7 @@ func (b *Breeze) generateTOTP(secret string) (string, error) {
 
 func (b *Breeze) getSessionId(userId string, password string, totpCode string) string {
 	caps := selenium.Capabilities{"browserName": "chrome"}
-	dir := b.pathToSdkDir
+	dir, _ := os.Getwd()
 	chromeDriverName := "chromedriver"
 	if b.environment == Mac {
 		chromeDriverName = "chromedriver-mc"
