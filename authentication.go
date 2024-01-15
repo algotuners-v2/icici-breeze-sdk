@@ -82,7 +82,6 @@ func (b *Breeze) getSessionId(userId string, password string, totpCode string) s
 func (b *Breeze) generateSessionToken(userId string, password string, apiKey string, totpCode string) {
 	sessionId := b.getSessionId(userId, password, totpCode)
 	customerdetailsUrl := apiBreezeUrl + "/customerdetails"
-	fmt.Println(sessionId)
 	jsonBody := strings.NewReader(fmt.Sprintf(`{
 		"AppKey": "%s",
 		"SessionToken": "%s"
@@ -99,7 +98,6 @@ func (b *Breeze) generateSessionToken(userId string, password string, apiKey str
 	cdResponse := breeze_models.CustomerDetailsResponse{}
 	err = json.Unmarshal(body, &cdResponse)
 	utils.Log(err)
-	fmt.Println(cdResponse.Success.SessionToken)
 	b.sessionId = sessionId
 	b.sessionToken = cdResponse.Success.SessionToken
 }

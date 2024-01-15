@@ -50,14 +50,13 @@ var (
 	BreezeClient = &Breeze{}
 )
 
-func (b *Breeze) Init(userId string, password string, apiKey string, totpCode string, environment string, pathToSdkDir string) {
+func (b *Breeze) Init(userId string, password string, apiKey string, totpCode string, environment string) {
 	b.userId = userId
 	b.password = password
 	b.apiKey = apiKey
 	b.totpCode = totpCode
 	b.baseUrl = baseBreezeUrl
 	b.environment = environment
-	b.pathToSdkDir = pathToSdkDir
 	b.generateSessionToken(userId, password, apiKey, totpCode)
 }
 
