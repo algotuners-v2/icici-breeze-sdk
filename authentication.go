@@ -3,11 +3,11 @@ package icici_breeze_sdk
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/algotuners-v2/icici-breeze-sdk/breeze_models"
+	"github.com/algotuners-v2/icici-breeze-sdk/utils"
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"github.com/tebeka/selenium"
-	"icici-breeze-sdk/breeze_models"
-	"icici-breeze-sdk/utils"
 	"io/ioutil"
 	"net/http"
 	"os"

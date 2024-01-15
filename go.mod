@@ -1,4 +1,4 @@
-module icici-breeze-sdk
+module github.com/algotuners-v2/icici-breeze-sdk
 
 go 1.20
 

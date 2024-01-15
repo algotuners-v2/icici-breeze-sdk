@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"icici-breeze-sdk"
+	"github.com/algotuners-v2/icici-breeze-sdk"
 	"time"
 )
 
