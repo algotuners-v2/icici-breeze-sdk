@@ -200,9 +200,9 @@ func (b *Breeze) GetHistoricalDataV2(input BreezeHistoricalDataInput) []breeze_m
 	interval := input.Interval
 	currentTime := startTime
 	candlesData := []breeze_models.CandleData{}
-	apiCount := 0
 	for currentTime.Before(endTime) {
 		currentEndTime := b.getEndTimeUnderApiLimitForTimestamp(currentTime, interval)
+		currentEndTime = b.findMinTime(currentEndTime, endTime)
 		input.FromDate = currentTime
 		input.ToDate = currentEndTime
 		candles := b.GetHistoricalData(input)
@@ -213,7 +213,6 @@ func (b *Breeze) GetHistoricalDataV2(input BreezeHistoricalDataInput) []breeze_m
 		if b.isTimeAfterMarketHours(currentTime) || currentTimeWeekDay == time.Saturday || currentTimeWeekDay == time.Sunday {
 			currentTime, _ = b.getCurrentDayOrNextMarketStartAndEndTime(currentTime)
 		}
-		apiCount++
 		time.Sleep(time.Second)
 	}
 	return candlesData
