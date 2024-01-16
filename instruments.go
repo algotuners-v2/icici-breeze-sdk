@@ -39,13 +39,15 @@ func getNseScrips() []breeze_models.NseScrip {
 		return nil
 	}
 	result := readNseScripCSVFile(csvFilePath)
-	deleteDir()
 	return result
 }
 
 func GetIciciInstruments() ([]breeze_models.NseScrip, []breeze_models.NseFnoScript) {
 	downloadIciciMasterScrips()
-	return getNseScrips(), getNseFnoScrips()
+	nseScrips := getNseScrips()
+	nseFnoScrips := getNseFnoScrips()
+	deleteDir()
+	return nseScrips, nseFnoScrips
 }
 
 func getNseFnoScrips() []breeze_models.NseFnoScript {
@@ -57,7 +59,6 @@ func getNseFnoScrips() []breeze_models.NseFnoScript {
 		return nil
 	}
 	result := readNseFnoScripCSVFile(csvFilePath)
-	deleteDir()
 	return result
 }
 
