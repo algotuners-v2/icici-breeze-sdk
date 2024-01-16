@@ -30,8 +30,7 @@ func downloadIciciMasterScrips() {
 	}
 }
 
-func GetNseScrips() []breeze_models.NseScrip {
-	downloadIciciMasterScrips()
+func getNseScrips() []breeze_models.NseScrip {
 	currentWd, _ := os.Getwd()
 	originalFilePath := path.Join(currentWd, "extracted", "NSEScripMaster.txt")
 	csvFilePath, err := convertTextToCSV(originalFilePath, ',') // Specify the delimiter
@@ -44,8 +43,12 @@ func GetNseScrips() []breeze_models.NseScrip {
 	return result
 }
 
-func GetNseFnoScrips() []breeze_models.NseFnoScript {
+func GetIciciInstruments() ([]breeze_models.NseScrip, []breeze_models.NseFnoScript) {
 	downloadIciciMasterScrips()
+	return getNseScrips(), getNseFnoScrips()
+}
+
+func getNseFnoScrips() []breeze_models.NseFnoScript {
 	currentWd, _ := os.Getwd()
 	originalFilePath := path.Join(currentWd, "extracted", "FONSEScripMaster.txt")
 	csvFilePath, err := convertTextToCSV(originalFilePath, ',') // Specify the delimiter
