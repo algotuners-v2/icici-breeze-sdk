@@ -7,7 +7,7 @@ import (
 )
 
 type NseScrip struct {
-	Token                     int       `csv:"Token"`
+	Token                     string    `csv:"Token"`
 	ShortName                 string    `csv:"ShortName"`
 	Series                    string    `csv:"Series"`
 	CompanyName               string    `csv:"CompanyName"`

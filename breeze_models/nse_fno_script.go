@@ -3,7 +3,7 @@ package breeze_models
 import "time"
 
 type NseFnoScript struct {
-	Token                    int       `csv:"Token"`
+	Token                    string    `csv:"Token"`
 	InstrumentName           string    `csv:"InstrumentName"`
 	ShortName                string    `csv:"ShortName"`
 	Series                   string    `csv:"Series"`
