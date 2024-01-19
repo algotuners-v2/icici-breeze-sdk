@@ -82,7 +82,7 @@ func (b *Breeze) getSessionId(userId string, password string, totpCode string) s
 	utils.Log(err)
 	err = item.Click()
 	utils.Log(err)
-
+	_ = chromeDrivers.SetImplicitWaitTimeout(time.Second * 5)
 	pin, err := chromeDrivers.FindElement(selenium.ByXPATH, "/html/body/form/div[2]/div/div/div[2]/div/div[2]/div[2]/div[3]/div/div[1]/input[1]")
 	otpValue, err := b.generateTOTP(totpCode)
 	err = pin.SendKeys(otpValue)
