@@ -66,29 +66,36 @@ func (b *Breeze) getSessionId(userId string, password string, totpCode string) s
 	utils.Log(err)
 	passWord, err := chromeDrivers.FindElement(selenium.ByXPATH, "/html/body/form/div[2]/div/div/div[1]/div[2]/div/div[3]/div/input")
 	utils.Log(err)
-	_ = userName.SendKeys(userId)
-	_ = passWord.SendKeys(password)
+	err = userName.SendKeys(userId)
+	utils.Log(err)
+	err = passWord.SendKeys(password)
+	utils.Log(err)
 
 	// checkbox
 	item, err := chromeDrivers.FindElement(selenium.ByXPATH, "/html/body/form/div[2]/div/div/div[1]/div[2]/div/div[4]/div/input")
 	utils.Log(err)
-	_ = item.Click()
+	err = item.Click()
+	utils.Log(err)
 
 	// login
 	item, err = chromeDrivers.FindElement(selenium.ByXPATH, "/html/body/form/div[2]/div/div/div[1]/div[2]/div/div[5]/input[1]")
 	utils.Log(err)
-	_ = item.Click()
+	err = item.Click()
+	utils.Log(err)
 
 	pin, err := chromeDrivers.FindElement(selenium.ByXPATH, "/html/body/form/div[2]/div/div/div[2]/div/div[2]/div[2]/div[3]/div/div[1]/input[1]")
 	otpValue, err := b.generateTOTP(totpCode)
-	_ = pin.SendKeys(otpValue)
+	err = pin.SendKeys(otpValue)
+	utils.Log(err)
 
 	item, err = chromeDrivers.FindElement(selenium.ByXPATH, "/html/body/form/div[2]/div/div/div[2]/div/div[2]/div[2]/div[4]/input[1]")
 	utils.Log(err)
-	_ = item.Click()
+	err = item.Click()
+	utils.Log(err)
 
 	time.Sleep(time.Second * 2)
-	currentUrl, _ := chromeDrivers.CurrentURL()
+	currentUrl, err := chromeDrivers.CurrentURL()
+	utils.Log(err)
 	strList := strings.Split(currentUrl, "apisession=")
 	sessionId := strList[1]
 	return sessionId
