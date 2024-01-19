@@ -8,6 +8,7 @@ import (
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"github.com/tebeka/selenium"
+	"github.com/tebeka/selenium/chrome"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -30,19 +31,33 @@ func (b *Breeze) generateTOTP(secret string) (string, error) {
 }
 
 func (b *Breeze) getSessionId(userId string, password string, totpCode string) string {
-	caps := selenium.Capabilities{"browserName": "chrome"}
 	dir, _ := os.Getwd()
 	chromeDriverName := "chromedriver"
 	if b.environment == Mac {
 		chromeDriverName = "chromedriver-mc"
 	}
 	chromePath := path.Join(dir, chromeDriverName)
-	opts := []selenium.ServiceOption{}
-	drivers, err := selenium.NewChromeDriverService(chromePath, 8080, opts...)
+	service, err := selenium.NewChromeDriverService(chromePath, 4444)
+	if err != nil {
+		panic(err)
+	}
+	defer service.Stop()
+
+	caps := selenium.Capabilities{}
+	caps.AddChrome(chrome.Capabilities{Args: []string{
+		"window-size=1920x1080",
+		"--no-sandbox",
+		"--disable-dev-shm-usage",
+		"disable-gpu",
+		"--headless",
+	}})
+
+	chromeDrivers, err := selenium.NewRemote(caps, "")
+
 	utils.Log(err)
-	defer drivers.Stop()
-	chromeDrivers, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", 8080))
-	utils.Log(err)
+	if err == nil {
+		fmt.Println("chrome Driver done.")
+	}
 	defer chromeDrivers.Quit()
 	err = chromeDrivers.Get("https://api.icicidirect.com/apiuser/login?api_key=342_232u02y7541998~582e6762HG787")
 	utils.Log(err)

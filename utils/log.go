@@ -4,6 +4,6 @@ import "fmt"
 
 func Log(err error) {
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error is -> " + err.Error())
 	}
 }
