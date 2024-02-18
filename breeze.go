@@ -75,16 +75,24 @@ func (b *Breeze) getCurrentDayMarketStartAndEndTime(currentTime time.Time) (time
 		currentTime = currentTime.AddDate(0, 0, 1)
 		return b.getCurrentDayMarketStartAndEndTime(currentTime)
 	}
-	marketStartTime := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), 9, 15, 0, 0, currentTime.Location())
-	marketEndTime := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), 15, 30, 0, 0, currentTime.Location())
+	marketStartTime := time.Date(
+		currentTime.Year(), currentTime.Month(), currentTime.Day(), 9, 15, 0, 0, currentTime.Location(),
+	)
+	marketEndTime := time.Date(
+		currentTime.Year(), currentTime.Month(), currentTime.Day(), 15, 30, 0, 0, currentTime.Location(),
+	)
 
 	return marketStartTime, marketEndTime
 }
 
 func (b *Breeze) getCurrentDayOrNextMarketStartAndEndTime(currentTime time.Time) (time.Time, time.Time) {
 	weekDay := currentTime.Weekday()
-	marketStartTime := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), 9, 15, 0, 0, currentTime.Location())
-	marketEndTime := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), 15, 30, 0, 0, currentTime.Location())
+	marketStartTime := time.Date(
+		currentTime.Year(), currentTime.Month(), currentTime.Day(), 9, 15, 0, 0, currentTime.Location(),
+	)
+	marketEndTime := time.Date(
+		currentTime.Year(), currentTime.Month(), currentTime.Day(), 15, 30, 0, 0, currentTime.Location(),
+	)
 
 	if weekDay == time.Sunday || weekDay == time.Saturday {
 		currentTime = currentTime.AddDate(0, 0, 1)
@@ -93,7 +101,9 @@ func (b *Breeze) getCurrentDayOrNextMarketStartAndEndTime(currentTime time.Time)
 
 	if currentTime.Equal(marketEndTime) || currentTime.After(marketEndTime) {
 		nextDay := currentTime.AddDate(0, 0, 1)
-		nextDayMarketStartTime := time.Date(nextDay.Year(), nextDay.Month(), nextDay.Day(), 9, 15, 0, 0, currentTime.Location())
+		nextDayMarketStartTime := time.Date(
+			nextDay.Year(), nextDay.Month(), nextDay.Day(), 9, 15, 0, 0, currentTime.Location(),
+		)
 		return b.getCurrentDayOrNextMarketStartAndEndTime(nextDayMarketStartTime)
 	}
 
@@ -141,7 +151,12 @@ func (b *Breeze) getEndTimeUnderApiLimitForTimestamp(startTime time.Time, timefr
 }
 
 func (b *Breeze) GetHistoricalData(input BreezeHistoricalDataInput) []breeze_models.CandleData {
-	url := fmt.Sprintf("%s/api/v2/historicalcharts?stock_code=%s&exch_code=%s&from_date=%s&to_date=%s&interval=%s&product_type=%s&expiry_date=%s&right=%s&strike_price=%s", b.baseUrl, input.StockCode, input.ExchCode, b.getTimeFormatString(input.FromDate), b.getTimeFormatString(input.ToDate), input.Interval, input.ProductType, b.getTimeFormatString(input.ExpiryDate), input.Right, strconv.Itoa(input.StrikePrice))
+	url := fmt.Sprintf(
+		"%s/api/v2/historicalcharts?stock_code=%s&exch_code=%s&from_date=%s&to_date=%s&interval=%s&product_type=%s&expiry_date=%s&right=%s&strike_price=%s",
+		b.baseUrl, input.StockCode, input.ExchCode, b.getTimeFormatString(input.FromDate),
+		b.getTimeFormatString(input.ToDate), input.Interval, input.ProductType, b.getTimeFormatString(input.ExpiryDate),
+		input.Right, strconv.Itoa(input.StrikePrice),
+	)
 	var headers http.Header = map[string][]string{}
 	queryParams := netUrl.Values{
 		"stock_code":   {input.StockCode},
@@ -213,7 +228,7 @@ func (b *Breeze) GetHistoricalDataV2(input BreezeHistoricalDataInput) []breeze_m
 		if b.isTimeAfterMarketHours(currentTime) || currentTimeWeekDay == time.Saturday || currentTimeWeekDay == time.Sunday {
 			currentTime, _ = b.getCurrentDayOrNextMarketStartAndEndTime(currentTime)
 		}
-		time.Sleep(time.Second)
+		time.Sleep(time.Millisecond * 400)
 	}
 	return candlesData
 }
